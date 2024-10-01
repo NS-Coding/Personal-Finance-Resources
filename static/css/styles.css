@@ -1,0 +1,97 @@
+/* static/css/styles.css */
+
+/* General Styles */
+body {
+    background-color: #121212; /* Dark background */
+    color: #e0e0e0; /* Light text */
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+}
+
+.navbar {
+    background-color: #1f1f1f;
+}
+
+.navbar-brand, .navbar-nav .nav-link {
+    color: #e0e0e0 !important;
+}
+
+.navbar-brand:hover, .navbar-nav .nav-link:hover {
+    color: #ffffff !important;
+}
+
+h1, h2, h3 {
+    color: #ffffff;
+}
+
+.table {
+    background-color: #1f1f1f;
+}
+
+.table thead th {
+    background-color: #333333;
+    color: #ffffff;
+}
+
+.form-control {
+    background-color: #2c2c2c;
+    color: #e0e0e0;
+    border: 1px solid #444444;
+}
+
+.form-control:focus {
+    background-color: #2c2c2c;
+    color: #e0e0e0;
+    border: 1px solid #777777;
+}
+
+.btn-primary {
+    background-color: #3a3a3a;
+    border-color: #555555;
+}
+
+.btn-primary:hover {
+    background-color: #555555;
+    border-color: #777777;
+}
+
+.alert {
+    background-color: #333333;
+    border-color: #444444;
+    color: #e0e0e0;
+}
+
+.alert a {
+    color: #ffffff;
+}
+
+.close {
+    color: #ffffff;
+}
+
+.form-group label {
+    color: #e0e0e0;
+}
+
+.glide-path-entry {
+    background-color: #1f1f1f;
+}
+
+input, textarea, select {
+    color: #e0e0e0;
+}
+
+::-webkit-input-placeholder {
+    color: #bbbbbb;
+}
+
+:-ms-input-placeholder {
+    color: #bbbbbb;
+}
+
+::-ms-input-placeholder {
+    color: #bbbbbb;
+}
+
+::placeholder {
+    color: #bbbbbb;
+}

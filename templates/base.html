@@ -1,0 +1,94 @@
+<!-- templates/base.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Investment Fund Manager</title>
+    <!-- Include Bootstrap CSS for styling -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        /* Custom styles for the header */
+        .navbar-custom {
+            background-color: #007bff; /* Blue background */
+        }
+        .navbar-custom .navbar-brand,
+        .navbar-custom .nav-link {
+            color: #ffffff; /* White text */
+        }
+        .navbar-custom .nav-link:hover {
+            color: #d5d5d5; /* Light gray on hover */
+        }
+        /* Chart container styling */
+        .chart-container {
+            position: relative;
+            width: 100%;
+            margin: auto;
+            height: 600px; /* Set desired height */
+        }
+    </style>
+</head>
+
+<body class="bg-dark text-white">
+    <!-- Use container-fluid for full-width responsiveness -->
+    <div class="container-fluid mt-4">
+        <!-- Navigation menu -->
+        <nav class="navbar navbar-expand-lg navbar-custom mb-4">
+            <a class="navbar-brand" href="{{ url_for('home', fund_id=fund_id) }}">Investment Fund Manager</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" 
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation" style="background-color: #ffffff;">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                {% if available_funds %}
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('rebalance', fund_id=fund_id) }}">Rebalance</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('plot', fund_id=fund_id) }}">Allocation Plot</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('fund_performance', fund_id=fund_id) }}">Fund Performance</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('edit_config', fund_id=fund_id) }}">Edit Config</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('edit_config') }}">Create Fund</a></li>
+                </ul>
+                {% else %}
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('edit_config') }}">Create Fund</a></li>
+                </ul>
+                {% endif %}
+            </div>
+        </nav>
+
+        <!-- Fund selection dropdown -->
+        {% if available_funds %}
+        <form method="get" action="{{ url_for(request.endpoint) }}" id="fund-select-form" class="form-inline mb-3">
+            <label for="fund-select" class="mr-2">Select Fund:</label>
+            <select name="fund_id" id="fund-select" class="form-control" onchange="document.getElementById('fund-select-form').submit();">
+                {% for fund in available_funds %}
+                <option value="{{ fund.id }}" {% if fund.id == fund_id %}selected{% endif %}>{{ fund.name }}</option>
+                {% endfor %}
+            </select>
+        </form>
+        {% endif %}
+
+        <!-- Flash messages -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+        {% for category, message in messages %}
+        <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        {% endfor %}
+        {% endif %}
+        {% endwith %}
+
+        <!-- Content -->
+        {% block content %}{% endblock %}
+    </div>
+    <!-- Include jQuery and Bootstrap JS for interactive components -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <!-- Include Popper and Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <!-- Include Bootstrap JS -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>  
+</body>
+</html>

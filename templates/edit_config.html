@@ -1,0 +1,213 @@
+<!-- templates/edit_config.html -->
+{% extends "base.html" %}
+{% block content %}
+<h2>Edit Configuration for {{ config.fund_name }}</h2>
+<form method="post" action="{{ url_for('edit_config', fund_id=fund_id) }}" onsubmit="return validateForm()">
+    <input type="hidden" name="fund_id" value="{{ fund_id }}">
+    <div class="form-group">
+        <label for="date_of_birth">Date of Birth (Year):</label>
+        <input type="number" class="form-control" name="date_of_birth" value="{{ config.date_of_birth }}" required>
+    </div>
+
+    <h3>Funds</h3>
+    {% for asset_class, funds in config.funds.items() %}
+    <div class="form-group">
+        <label>{{ asset_class_names[asset_class] }} Funds:</label>
+        <div id="{{ asset_class }}-funds">
+            {% for fund in funds %}
+            <div class="form-row align-items-center mt-2">
+                <div class="col-sm-5">
+                    <input type="text" class="form-control" name="{{ asset_class }}_symbol" value="{{ fund.symbol }}" placeholder="Symbol" required>
+                </div>
+                <div class="col-sm-5">
+                    <input type="number" step="0.01" class="form-control {{ asset_class }}-percentage" name="{{ asset_class }}_percentage" value="{{ fund.percentage }}" placeholder="Percentage" required>
+                </div>
+                <div class="col-sm-2">
+                    <button type="button" class="btn btn-danger remove-fund">Remove</button>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        <button type="button" class="btn btn-secondary mt-2" onclick="addFundRow('{{ asset_class }}')">Add Fund</button>
+    </div>
+    {% endfor %}
+
+    <h3>Glide Path</h3>
+    <div id="glide-path-entries">
+        {% for entry in config.glide_path %}
+        <div class="glide-path-entry border p-2 mb-2" draggable="true">
+            <button type="button" class="btn btn-danger btn-sm remove-glide-entry" aria-label="Close">
+                &times;
+            </button>
+            <div class="form-row">
+                <div class="form-group col-6 col-md-2">
+                    <label>Age:</label>
+                    <input type="number" class="form-control" name="age" value="{{ entry.age }}" required>
+                </div>
+                {% for key, value in entry.allocations.items() %}
+                <div class="form-group col-6 col-md-2">
+                    <label>{{ asset_class_names[key] }} (%):</label>
+                    <input type="number" step="0.01" class="form-control" name="{{ key }}" value="{{ value }}" required>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    <button type="button" class="btn btn-secondary mb-3" onclick="addGlidePathEntry()">Add Glide Path Entry</button>
+    <button type="submit" name="action" value="Save" class="btn btn-primary">Save Configuration</button>
+</form>
+
+<script>
+    function addFundRow(asset_class) {
+        var container = document.getElementById(asset_class + '-funds');
+        var div = document.createElement('div');
+        div.className = 'form-row align-items-center mt-2';
+        div.innerHTML = `
+            <div class="col-sm-5">
+                <input type="text" class="form-control" name="${asset_class}_symbol" placeholder="Symbol" required>
+            </div>
+            <div class="col-sm-5">
+                <input type="number" step="0.01" class="form-control ${asset_class}-percentage" name="${asset_class}_percentage" placeholder="Percentage" required>
+            </div>
+            <div class="col-sm-2">
+                <button type="button" class="btn btn-danger remove-fund">Remove</button>
+            </div>
+        `;
+        container.appendChild(div);
+    }
+
+    document.addEventListener('click', function(event) {
+        if (event.target.closest('.remove-fund')) {
+            event.target.closest('.form-row').remove();
+        }
+        if (event.target.closest('.remove-glide-entry')) {
+            event.target.closest('.glide-path-entry').remove();
+        }
+    });
+
+    function addGlidePathEntry() {
+        var container = document.getElementById('glide-path-entries');
+        var div = document.createElement('div');
+        div.className = 'glide-path-entry border p-2 mb-2';
+        div.setAttribute('draggable', 'true');
+        var allocationsHtml = '';
+        {% for key in asset_class_names.keys() %}
+        allocationsHtml += `
+            <div class="form-group col-6 col-md-2">
+                <label>{{ asset_class_names[key] }} (%):</label>
+                <input type="number" step="0.01" class="form-control" name="{{ key }}" required>
+            </div>
+        `;
+        {% endfor %}
+        div.innerHTML = `
+            <button type="button" class="btn btn-danger btn-sm remove-glide-entry" aria-label="Close">
+                &times;
+            </button>
+            <div class="form-row">
+                <div class="form-group col-6 col-md-2">
+                    <label>Age:</label>
+                    <input type="number" class="form-control" name="age" required>
+                </div>
+                ${allocationsHtml}
+            </div>
+        `;
+        container.appendChild(div);
+        addDnDHandlers(div);
+    }
+
+    // Drag-and-Drop Functionality
+    let dragSrcEl = null;
+
+    function handleDragStart(e) {
+        dragSrcEl = this;
+        e.dataTransfer.effectAllowed = 'move';
+        e.dataTransfer.setData('text/html', this.outerHTML);
+        this.classList.add('dragElem');
+    }
+
+    function handleDragOver(e) {
+        if (e.preventDefault) {
+            e.preventDefault(); // Necessary. Allows us to drop.
+        }
+        e.dataTransfer.dropEffect = 'move';
+        return false;
+    }
+
+    function handleDragEnter(e) {
+        this.classList.add('over');
+    }
+
+    function handleDragLeave(e) {
+        this.classList.remove('over');
+    }
+
+    function handleDrop(e) {
+        if (e.stopPropagation) {
+            e.stopPropagation();
+        }
+        if (dragSrcEl != this) {
+            this.parentNode.removeChild(dragSrcEl);
+            let dropHTML = e.dataTransfer.getData('text/html');
+            this.insertAdjacentHTML('beforebegin', dropHTML);
+            let dropElem = this.previousSibling;
+            addDnDHandlers(dropElem);
+        }
+        return false;
+    }
+
+    function handleDragEnd(e) {
+        this.classList.remove('over');
+    }
+
+    function addDnDHandlers(elem) {
+        elem.addEventListener('dragstart', handleDragStart, false);
+        elem.addEventListener('dragenter', handleDragEnter, false);
+        elem.addEventListener('dragover', handleDragOver, false);
+        elem.addEventListener('dragleave', handleDragLeave, false);
+        elem.addEventListener('drop', handleDrop, false);
+        elem.addEventListener('dragend', handleDragEnd, false);
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        let entries = document.querySelectorAll('.glide-path-entry');
+        entries.forEach(function(entry) {
+            entry.setAttribute('draggable', 'true');
+            addDnDHandlers(entry);
+        });
+    });
+
+    function validateForm() {
+        let assetClasses = {{ asset_class_names.keys() | list | safe }};
+        let valid = true;
+
+        assetClasses.forEach(function(assetClass) {
+            let percentageFields = document.querySelectorAll('.' + assetClass + '-percentage');
+            let total = 0;
+            percentageFields.forEach(function(field) {
+                total += parseFloat(field.value) || 0;
+            });
+            if (Math.abs(total - 100) > 0.01) {
+                alert('The total percentage for ' + assetClass.replace('_', ' ') + ' must equal 100%. Currently, it is ' + total.toFixed(2) + '%.');
+                valid = false;
+            }
+        });
+
+        // Validate Glide Path Allocations
+        let glideEntries = document.querySelectorAll('.glide-path-entry');
+        glideEntries.forEach(function(entry) {
+            let totalAllocation = 0;
+            assetClasses.forEach(function(assetClass) {
+                let field = entry.querySelector('input[name="' + assetClass + '"]');
+                totalAllocation += parseFloat(field.value) || 0;
+            });
+            if (Math.abs(totalAllocation - 100) > 0.01) {
+                alert('Each Glide Path allocation must sum to 100%. Currently, it is ' + totalAllocation.toFixed(2) + '%.');
+                valid = false;
+            }
+        });
+
+        return valid;
+    }
+</script>
+{% endblock %}

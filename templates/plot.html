@@ -1,0 +1,93 @@
+<!-- templates/plot.html -->
+{% extends "base.html" %}
+{% block content %}
+<h2>Allocation Plot for {{ fund_name }}</h2>
+<div class="row justify-content-center">
+    <div class="col-12">
+        <div class="chart-container">
+            <canvas id="allocationChart"></canvas>
+        </div>
+    </div>
+</div>
+
+<!-- Include Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js@3.5.1"></script>
+
+<script>
+    var ctx = document.getElementById('allocationChart').getContext('2d');
+    var ages = {{ ages | tojson }};
+    var allocations = {{ allocations_over_age | tojson }};
+    var datasets = [];
+    var colors = ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF'];
+    var index = 0;
+
+    for (var assetClass in allocations) {
+        datasets.push({
+            label: assetClass.replace('_', ' '),
+            data: allocations[assetClass],
+            borderColor: colors[index % colors.length],
+            backgroundColor: colors[index % colors.length],
+            fill: false,
+            tension: 0.1
+        });
+        index++;
+    }
+
+    var chart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: ages,
+            datasets: datasets
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false, // Allows chart to fill the container
+            plugins: {
+                tooltip: {
+                    mode: 'index',
+                    intersect: false,
+                },
+                legend: {
+                    labels: {
+                        color: '#FFFFFF' // White text
+                    }
+                },
+                title: {
+                    display: true,
+                    text: 'Asset Allocation Over Age',
+                    color: '#FFFFFF' // White text
+                }
+            },
+            interaction: {
+                mode: 'nearest',
+                axis: 'x',
+                intersect: false
+            },
+            scales: {
+                x: {
+                    title: {
+                        display: true,
+                        text: 'Age',
+                        color: '#FFFFFF' // White text
+                    },
+                    ticks: {
+                        color: '#FFFFFF' // White text
+                    }
+                },
+                y: {
+                    title: {
+                        display: true,
+                        text: 'Allocation (%)',
+                        color: '#FFFFFF' // White text
+                    },
+                    ticks: {
+                        color: '#FFFFFF', // White text
+                        beginAtZero: true,
+                        max: 100
+                    }
+                }
+            }
+        }
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,47 @@
+<!-- templates/home.html -->
+{% extends "base.html" %}
+{% block content %}
+<h2>Welcome to the Investment Fund Manager</h2>
+
+<p>This application helps you manage your investment portfolios efficiently. Below is a guide on how to use each section of the application:</p>
+
+<h3>1. Rebalance</h3>
+<p>The <strong>Rebalance</strong> section allows you to calculate how to allocate new investments to maintain your target asset allocation based on your age and glide path.</p>
+<ul>
+    <li>Enter the amount you wish to invest and your current holdings.</li>
+    <li>The application will suggest how much to invest in each fund to rebalance your portfolio.</li>
+</ul>
+
+<h3>2. Allocation Plot</h3>
+<p>The <strong>Allocation Plot</strong> displays a graphical representation of your asset allocation over time, based on your configured glide path.</p>
+<ul>
+    <li>Visualize how your allocations change as you age.</li>
+    <li>Use this to plan your long-term investment strategy.</li>
+</ul>
+
+<h3>3. Fund Performance</h3>
+<p>The <strong>Fund Performance</strong> section provides detailed performance metrics for your funds.</p>
+<ul>
+    <li>View current prices, daily changes, and historical returns.</li>
+    <li>Select individual funds to see their historical performance charts.</li>
+</ul>
+
+<h3>4. Edit Config</h3>
+<p>In the <strong>Edit Config</strong> section, you can customize your investment strategy.</p>
+<ul>
+    <li>Set your date of birth to calculate your age-based allocations.</li>
+    <li>Add or remove funds for each asset class and set their target percentages.</li>
+    <li>Configure your glide path by specifying asset allocations at different ages.</li>
+</ul>
+
+<h3>5. Create Fund</h3>
+<p>Use the <strong>Create Fund</strong> option to set up a new investment fund.</p>
+<ul>
+    <li>Define a unique fund name.</li>
+    <li>Configure funds and glide paths for the new fund.</li>
+</ul>
+
+<h3>Getting Started</h3>
+<p>To begin, select an existing fund from the dropdown menu or create a new one. Navigate through the sections using the navigation bar at the top.</p>
+
+{% endblock %}

@@ -1,0 +1,45 @@
+<!-- templates/rebalance.html -->
+{% extends "base.html" %}
+{% block content %}
+<h2>Rebalance Your Portfolio for {{ fund_name }}</h2>
+{% if amounts %}
+    <h3>Your Age: {{ age }}</h3>
+    <h3>Amounts to Invest in Each Fund:</h3>
+    <div class="table-responsive">
+        <table class="table table-dark table-striped">
+            <thead>
+                <tr>
+                    <th>Fund</th>
+                    <th>Amount Needed to Fully Rebalance ($)</th>
+                    <th>Amount to Invest ($)</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for fund in amounts.keys() %}
+                <tr>
+                    <td>{{ fund }}</td>
+                    <td>${{ '%.2f'|format(amounts_needed[fund]) }}</td>
+                    <td>${{ '%.2f'|format(amounts[fund]) }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <a href="{{ url_for('rebalance', fund_id=fund_id) }}" class="btn btn-primary">Back</a>
+{% else %}
+    <form method="post" action="{{ url_for('rebalance', fund_id=fund_id) }}">
+        <div class="form-group">
+            <label for="amount_to_invest">Amount to Invest ($):</label>
+            <input type="number" step="0.01" class="form-control" name="amount_to_invest" required>
+        </div>
+        <h3>Current Holdings:</h3>
+        {% for fund in fund_list %}
+        <div class="form-group">
+            <label for="current_holdings[{{ fund }}]">{{ fund }}:</label>
+            <input type="number" step="0.01" class="form-control" name="current_holdings[{{ fund }}]" required>
+        </div>
+        {% endfor %}
+        <button type="submit" class="btn btn-primary">Calculate Rebalancing</button>
+    </form>
+{% endif %}
+{% endblock %}

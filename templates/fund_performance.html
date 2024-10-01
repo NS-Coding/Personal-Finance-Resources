@@ -1,0 +1,171 @@
+<!-- templates/fund_performance.html -->
+{% extends "base.html" %}
+{% block content %}
+<h2>Fund Performance for {{ fund_name }}</h2>
+
+<div class="form-group">
+    <label for="fundSelector">Select Fund to View Performance Chart:</label>
+    <select id="fundSelector" class="form-control">
+        <option value="Overall Portfolio">Overall Portfolio</option>
+        {% for symbol in fund_symbols %}
+        <option value="{{ symbol }}">{{ symbol }}</option>
+        {% endfor %}
+    </select>
+</div>
+
+<div class="row justify-content-center">
+    <div class="col-12">
+        <div class="chart-container">
+            <canvas id="performanceChart"></canvas>
+        </div>
+    </div>
+</div>
+
+<table class="table table-dark table-striped table-responsive mt-4">
+    <thead>
+        <tr>
+            <th>Fund</th>
+            <th>Allocation (%)</th>
+            <th>Current Price ($)</th>
+            <th>Daily Change ($)</th>
+            <th>Daily Change (%)</th>
+            <th>1D (%)</th>
+            <th>5D (%)</th>
+            <th>1M (%)</th>
+            <th>3M (%)</th>
+            <th>6M (%)</th>
+            <th>1Y (%)</th>
+            <th>2Y (%)</th>
+            <th>5Y (%)</th>
+            <th>10Y (%)</th>
+            <th>YTD (%)</th>
+            <th>Max (%)</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for fund, data in performance_data.items() %}
+        <tr>
+            <td>{{ fund }}</td>
+            {% if data.error %}
+            <td colspan="15">Error: {{ data.error }}</td>
+            {% else %}
+            <td>{{ data.allocation_percentage }}%</td>
+            <td>{{ data.current_price if data.current_price != 'N/A' else data.current_price }}</td>
+            <td>{{ data.daily_change if data.daily_change != 'N/A' else data.daily_change }}</td>
+            <td>{{ data.daily_change_percent if data.daily_change_percent != 'N/A' else data.daily_change_percent }}</td>
+            {% for period in ['1d', '5d', '1mo', '3mo', '6mo', '1y', '2y', '5y', '10y', 'ytd', 'max'] %}
+            <td>{{ data.returns[period] }}%</td>
+            {% endfor %}
+            {% endif %}
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<!-- Include Moment.js and Chart.js with time adapter -->
+<script src="https://cdn.jsdelivr.net/npm/moment@2.29.1"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@3.5.1"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-moment@1.0.0"></script>
+
+<script>
+    var historicalData = {{ historical_data | tojson }};
+    var ctx = document.getElementById('performanceChart').getContext('2d');
+    var fundSelector = document.getElementById('fundSelector');
+    var chart;
+
+    function createChart(fund) {
+        if (chart) {
+            chart.destroy();
+        }
+        var data = historicalData[fund];
+        if (!data || data.length === 0) {
+            alert('No historical data available for ' + fund);
+            return;
+        }
+        var dates = data.map(function(item) {
+            return item.date;
+        });
+        var prices = data.map(function(item) {
+            return item.price;
+        });
+        chart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: dates,
+                datasets: [{
+                    label: fund + ' Performance',
+                    data: prices,
+                    borderColor: '#36A2EB',
+                    backgroundColor: 'rgba(0,0,0,0)',
+                    fill: false,
+                    tension: 0.1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false, // Allows chart to fill the container
+                plugins: {
+                    tooltip: {
+                        mode: 'index',
+                        intersect: false,
+                    },
+                    legend: {
+                        labels: {
+                            color: '#FFFFFF' // White text
+                        }
+                    },
+                    title: {
+                        display: true,
+                        text: fund + ' Historical Performance',
+                        color: '#FFFFFF' // White text
+                    }
+                },
+                interaction: {
+                    mode: 'nearest',
+                    axis: 'x',
+                    intersect: false
+                },
+                scales: {
+                    x: {
+                        type: 'time',
+                        time: {
+                            parser: 'YYYY-MM-DD',
+                            tooltipFormat: 'll',
+                            unit: 'month',
+                            displayFormats: {
+                                month: 'MMM YYYY'
+                            }
+                        },
+                        title: {
+                            display: true,
+                            text: 'Date',
+                            color: '#FFFFFF' // White text
+                        },
+                        ticks: {
+                            color: '#FFFFFF' // White text
+                        }
+                    },
+                    y: {
+                        title: {
+                            display: true,
+                            text: 'Price ($)',
+                            color: '#FFFFFF' // White text
+                        },
+                        ticks: {
+                            color: '#FFFFFF' // White text
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    fundSelector.addEventListener('change', function() {
+        var selectedFund = this.value;
+        createChart(selectedFund);
+    });
+
+    // Initialize the chart with the Overall Portfolio
+    createChart('Overall Portfolio');
+</script>
+{% endblock %}

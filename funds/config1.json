@@ -1,0 +1,112 @@
+{
+  "fund_name": "Nicholas' Investment/Retirement Fund",
+  "date_of_birth": 1997,
+  "glide_path": [
+    {
+      "age": 20,
+      "allocations": {
+        "us_stock": 62.0,
+        "intl_stock": 35.0,
+        "us_bond": 2.0,
+        "intl_bond": 1.0,
+        "short_term_tips": 0.0
+      }
+    },
+    {
+      "age": 40,
+      "allocations": {
+        "us_stock": 55.0,
+        "intl_stock": 35.0,
+        "us_bond": 7.0,
+        "intl_bond": 3.0,
+        "short_term_tips": 0.0
+      }
+    },
+    {
+      "age": 50,
+      "allocations": {
+        "us_stock": 52.0,
+        "intl_stock": 32.0,
+        "us_bond": 12.0,
+        "intl_bond": 4.0,
+        "short_term_tips": 0.0
+      }
+    },
+    {
+      "age": 60,
+      "allocations": {
+        "us_stock": 36.0,
+        "intl_stock": 24.0,
+        "us_bond": 28.0,
+        "intl_bond": 12.0,
+        "short_term_tips": 0.0
+      }
+    },
+    {
+      "age": 65,
+      "allocations": {
+        "us_stock": 30.0,
+        "intl_stock": 20.0,
+        "us_bond": 29.4,
+        "intl_bond": 12.6,
+        "short_term_tips": 8.0
+      }
+    },
+    {
+      "age": 72,
+      "allocations": {
+        "us_stock": 18.0,
+        "intl_stock": 12.0,
+        "us_bond": 37.24,
+        "intl_bond": 15.96,
+        "short_term_tips": 16.8
+      }
+    },
+    {
+      "age": 100,
+      "allocations": {
+        "us_stock": 18.0,
+        "intl_stock": 12.0,
+        "us_bond": 37.24,
+        "intl_bond": 15.96,
+        "short_term_tips": 16.8
+      }
+    }
+  ],
+  "funds": {
+    "us_stock": [
+      {
+        "symbol": "VOO",
+        "percentage": 60.0
+      },
+      {
+        "symbol": "VTI",
+        "percentage": 40.0
+      }
+    ],
+    "intl_stock": [
+      {
+        "symbol": "VXUS",
+        "percentage": 100.0
+      }
+    ],
+    "us_bond": [
+      {
+        "symbol": "BND",
+        "percentage": 100.0
+      }
+    ],
+    "intl_bond": [
+      {
+        "symbol": "BNDW",
+        "percentage": 100.0
+      }
+    ],
+    "short_term_tips": [
+      {
+        "symbol": "VTIP",
+        "percentage": 100.0
+      }
+    ]
+  }
+}
