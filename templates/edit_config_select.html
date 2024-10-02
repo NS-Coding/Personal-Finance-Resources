@@ -1,24 +1,7 @@
 <!-- templates/edit_config_select.html -->
 {% extends "base.html" %}
 {% block content %}
-<h2>Select Fund to Edit</h2>
-<form method="post" class="mb-4" action="{{ url_for('edit_config') }}">
-    {% if available_funds %}
-    <div class="form-group">
-        <label for="fund_id">Select Existing Fund:</label>
-        <select name="fund_id" class="form-control">
-            {% for fund in available_funds %}
-            <option value="{{ fund.id }}">{{ fund.name }}</option>
-            {% endfor %}
-        </select>
-    </div>
-    <button type="submit" name="action" value="Load" class="btn btn-primary">Load Fund</button>
-    {% else %}
-    <p>No funds available. Please create a new fund.</p>
-    {% endif %}
-</form>
-<hr>
-<h3>Or Create a New Fund</h3>
+<h3>Create a New Fund</h3>
 <form method="post" action="{{ url_for('edit_config') }}">
     <div class="form-group">
         <label for="new_fund_name">New Fund Name:</label>

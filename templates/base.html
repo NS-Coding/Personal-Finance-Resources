@@ -41,6 +41,7 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 {% if available_funds %}
                 <ul class="navbar-nav mr-auto">
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('home') }}">Home</a></li>
                     <li class="nav-item"><a class="nav-link" href="{{ url_for('rebalance', fund_id=fund_id) }}">Rebalance</a></li>
                     <li class="nav-item"><a class="nav-link" href="{{ url_for('plot', fund_id=fund_id) }}">Allocation Plot</a></li>
                     <li class="nav-item"><a class="nav-link" href="{{ url_for('fund_performance', fund_id=fund_id) }}">Fund Performance</a></li>
