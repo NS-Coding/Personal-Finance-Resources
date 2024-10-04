@@ -1,5 +1,7 @@
 # Personal Finance Resources
 
+**NOTE**: We are not Financial Advisors! Everything in this repository is not financial advice!
+
 The Personal Finance Resources Repository is a Flask web application that helps users manage their investment portfolios efficiently. It allows users to configure funds, set up glide paths, rebalance portfolios, and visualize asset allocations over time.
 
 ## Table of Contents
@@ -359,6 +361,7 @@ This project is licensed under the MIT License.
 For any questions or support, please contact:
 
 - **GitHub**: [ThePhiRatio](https://github.com/ThePhiRatio)
+- **GitHub**: [Davidfdaf](https://github.com/Davidfdaf)
 
 ---
 
