@@ -1,6 +1,6 @@
-# Investment Fund Manager
+# Personal Finance Resources
 
-The Investment Fund Manager is a Flask web application that helps users manage their investment portfolios efficiently. It allows users to configure funds, set up glide paths, rebalance portfolios, and visualize asset allocations over time.
+The Personal Finance Resources Repository is a Flask web application that helps users manage their investment portfolios efficiently. It allows users to configure funds, set up glide paths, rebalance portfolios, and visualize asset allocations over time.
 
 ## Table of Contents
 
