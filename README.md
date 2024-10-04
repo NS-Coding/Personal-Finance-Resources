@@ -364,4 +364,4 @@ For any questions or support, please contact:
 
 ## End Notes
 
-Thank you for using the Investment Fund Manager! We hope this application helps you achieve your investment goals. If you have any feedback or suggestions, please don't hesitate to reach out.
+Thank you for using the Personal Finance Resources Repository! We hope this application helps you achieve your investment goals. If you have any feedback or suggestions, please don't hesitate to reach out.
