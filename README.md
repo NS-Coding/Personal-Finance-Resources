@@ -6,7 +6,7 @@ The Personal Finance Resources Repository is a Flask web application that helps 
 
 ## Table of Contents
 
-- [Investment Fund Manager](#investment-fund-manager)
+- [Personal Finance Resources](#personal-finance-resources)
   - [Table of Contents](#table-of-contents)
   - [Features](#features)
   - [Getting Started](#getting-started)
