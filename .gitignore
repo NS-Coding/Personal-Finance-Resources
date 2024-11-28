@@ -54,3 +54,6 @@ instance/
 
 # .ipynb checkpoints
 .ipynb_checkpoints
+
+# file to add path variables
+.env
