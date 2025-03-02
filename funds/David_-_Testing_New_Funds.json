@@ -1,0 +1,72 @@
+{
+    "fund_name": "David - Testing New Funds",
+    "date_of_birth": 1997,
+    "funds": {
+        "us_stock": [
+            {
+                "symbol": "IWM",
+                "percentage": 65.0
+            },
+            {
+                "symbol": "VOO",
+                "percentage": 35.0
+            }
+        ],
+        "intl_stock": [
+            {
+                "symbol": "VIGI",
+                "percentage": 100.0
+            }
+        ],
+        "us_bond": [
+            {
+                "symbol": "IEF",
+                "percentage": 100.0
+            }
+        ],
+        "intl_bond": [
+            {
+                "symbol": "EMB",
+                "percentage": 100.0
+            }
+        ],
+        "short_term_tips": [
+            {
+                "symbol": "VIXY",
+                "percentage": 100.0
+            }
+        ]
+    },
+    "glide_path": [
+        {
+            "age": 45,
+            "allocations": {
+                "us_stock": 65.0,
+                "intl_stock": 20.0,
+                "us_bond": 10.0,
+                "intl_bond": 5.0,
+                "short_term_tips": 0.0
+            }
+        },
+        {
+            "age": 55,
+            "allocations": {
+                "us_stock": 45.0,
+                "intl_stock": 15.0,
+                "us_bond": 20.0,
+                "intl_bond": 10.0,
+                "short_term_tips": 10.0
+            }
+        },
+        {
+            "age": 65,
+            "allocations": {
+                "us_stock": 10.0,
+                "intl_stock": 10.0,
+                "us_bond": 10.0,
+                "intl_bond": 10.0,
+                "short_term_tips": 60.0
+            }
+        }
+    ]
+}

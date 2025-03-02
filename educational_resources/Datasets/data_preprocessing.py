@@ -113,6 +113,7 @@ def shiller_data():
 
 
 def international_stock_data():
+    #data from - https://www.macrohistory.net/database/
     working_directory = os.getcwd()
     result = cut_off_after_phrase(working_directory, 'educational_resources')
     path = os.path.join(result, "Datasets", "JSTdatasetR6.xlsx")
